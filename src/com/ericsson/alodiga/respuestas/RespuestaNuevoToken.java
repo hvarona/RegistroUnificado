@@ -1,7 +1,9 @@
 package com.ericsson.alodiga.respuestas;
 
+import com.ericsson.alodiga.model.Tarjeta;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,4 +36,7 @@ public class RespuestaNuevoToken extends Respuesta implements Serializable {
 		super(new Date(), codigo.getCodigo(), mensajeRespuesta);
 		this.token = token;
 	}
+        
+
+        
 }

@@ -3,7 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/usuario/workspacell/RegistroUnificado/src/com/ericsson/alodiga/model/Aplicacion.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/model/PreguntaIdioma.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/respuestas/RespuestaListadoEmpresa.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/respuestas/RespuestaListadoTarjetas.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericcson/alodiga/bean/APIOperations.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/model/Usuario.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/respuestas/RespuestaListadoUsuarios.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/respuestas/RespuestaListadoOcupaciones.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/respuestas/RespuestaCodigoRandom.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/utils/Utils.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/respuestas/RespuestaListadoPreguntaSecretas.java</file>
+            <file>file:/home/ltoro/workspace/RegistroUnificado/RegistroUnificado/src/com/ericsson/alodiga/ws/APIRegistroUnificado.java</file>
         </group>
     </open-files>
 </project-private>
