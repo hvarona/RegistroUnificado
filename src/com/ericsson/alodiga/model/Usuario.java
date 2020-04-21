@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.Email;
 
 import com.ericsson.alodiga.validations.CheckAge;
+import java.math.BigInteger;
 import javax.persistence.Transient;
 import javax.swing.text.StyledEditorKit;
 
@@ -191,6 +192,9 @@ public class Usuario implements Serializable {
 
     @Column
     private String pin;
+    
+    @Column(name = "remettencesDireccionId")
+    private BigInteger remettencesDireccionId;
 
     // bi-directional many-to-one association to CuentaBancaria
     @OneToMany(mappedBy = "usuario")
@@ -475,6 +479,15 @@ public class Usuario implements Serializable {
     public void setPin(String pin) {
         this.pin = pin;
     }
+
+    public BigInteger getRemettencesDireccionId() {
+        return remettencesDireccionId;
+    }
+
+    public void setRemettencesDireccionId(BigInteger remettencesDireccionId) {
+        this.remettencesDireccionId = remettencesDireccionId;
+    }
+    
 
     public List<RespuestaListadoProducto> getRespuestaListadoProductos() {
         return respuestaListadoProductos;

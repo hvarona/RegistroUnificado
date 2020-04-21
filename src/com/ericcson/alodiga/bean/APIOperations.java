@@ -108,6 +108,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
@@ -599,7 +600,7 @@ public class APIOperations {
                 logger.debug("usuario: --->" + usuario);
                 logger.debug("direccion1: --->" + direccion1);
                 logger.debug("cuenta: --->" + cuenta);
-              
+
                 if (usuarioId == null || usuarioId.equals("")) {
 
                     try {
@@ -1581,7 +1582,7 @@ public class APIOperations {
 
     }
 
-        public RespuestaUsuario loginAplicacionMovil(String usuarioApi, String passwordApi,
+    public RespuestaUsuario loginAplicacionMovil(String usuarioApi, String passwordApi,
             String email, String movil, String credencial, String ip) {
 
         if (!validarUsuario(usuarioApi, passwordApi)) {
@@ -1678,12 +1679,8 @@ public class APIOperations {
             APIAlodigaWalletProxy alodigaWalletProxy = new APIAlodigaWalletProxy();
             ProductListResponse productListResponse;
             try {
-                
-               
+
                 productListResponse = alodigaWalletProxy.getProductsByUserId(String.valueOf(usuario.getUsuarioId()));
-                
-                
-                
 
             } catch (RemoteException ex) {
                 ex.printStackTrace();
@@ -1718,6 +1715,12 @@ public class APIOperations {
         sesion.setActivo(true);
         sesion.setDireccionConfianza(direccion);
         usuario.setCountrySourceId(usuario.getDireccion().getPaisId());
+        if (usuario.getRemettencesDireccionId() != null) {
+            usuario.setRemettencesDireccionId(usuario.getRemettencesDireccionId());
+        } else {
+            usuario.setRemettencesDireccionId(BigInteger.ZERO);
+        }
+
         sesion.setFechaActividad(new Date());
         sesion.setUsuario(usuario);
         String token = UUID.randomUUID().toString();
@@ -1749,12 +1752,12 @@ public class APIOperations {
         for (Product p : productListResponse.getProducts()) {
             BalanceHistoryResponse balanceHistoryResponse = new BalanceHistoryResponse();
             Float currentBalanceProduct = 0F;
-            try {            
+            try {
                 balanceHistoryResponse = alodigaWalletProxy.getBalanceHistoryByProductAndUser(Long.valueOf(usuario.getUsuarioId()), p.getId());
                 if (balanceHistoryResponse.getCodigoRespuesta().equals(Constante.NOT_BALANCE_HISTORY_AVAILABLE_CODE)) {
                     //No tiene producto asociado
                     currentBalanceProduct = 0F;
-                } else {               
+                } else {
                     currentBalanceProduct = balanceHistoryResponse.getResponse().getCurrentAmount();
                 }
             } catch (RemoteException ex) {
@@ -1773,31 +1776,28 @@ public class APIOperations {
             return new RespuestaUsuario(CodigoRespuesta.ERROR_INTERNO);
         }
 
-            try {
-                usuario.setCumplimient(cumplimientResponse.getCumplimients().getComplientStatusId().getId().toString());
-            } catch (NullPointerException e) {
-                //No tiene cumplimineto aun
-                  usuario.setCumplimient(String.valueOf(Constante.SIN_VALIDAR));
-            }
-        
+        try {
+            usuario.setCumplimient(cumplimientResponse.getCumplimients().getComplientStatusId().getId().toString());
+        } catch (NullPointerException e) {
+            //No tiene cumplimineto aun
+            usuario.setCumplimient(String.valueOf(Constante.SIN_VALIDAR));
+        }
 
         try {
             if (aPIAlodigaWalletProxy.hasPrepayCardAsociated(Long.valueOf(usuario.getUsuarioId()))) {
                 usuario.setPrepayCardAsociate(Constante.HAS_PREPAY_CARD_ASOCIATED);
 
-            }else {
-              usuario.setPrepayCardAsociate(Constante.NOT_HAS_PREPAY_CARD_ASOCIATED);
+            } else {
+                usuario.setPrepayCardAsociate(Constante.NOT_HAS_PREPAY_CARD_ASOCIATED);
             }
 
             if (aPIAlodigaWalletProxy.hasPrepayCard(Long.valueOf(usuario.getUsuarioId()))) {
                 usuario.setPrepayCard(Constante.HAS_PREPAY_CARD);
                 CardResponse respuestaTarjeta = aPIAlodigaWalletProxy.getCardByUserId(String.valueOf(usuario.getUsuarioId()));
                 usuario.setNumberCard(respuestaTarjeta.getNumberCard());
-            }else {
-              usuario.setPrepayCard(Constante.NOT_HAS_PREPAY_CARD);
+            } else {
+                usuario.setPrepayCard(Constante.NOT_HAS_PREPAY_CARD);
             }
-            
-            
 
         } catch (RemoteException ex) {
             ex.printStackTrace();
@@ -3184,7 +3184,7 @@ public class APIOperations {
                     Float currentBalanceProduct = 0F;
                     try {
                         balanceHistoryResponse = alodigaWalletProxy.getBalanceHistoryByProductAndUser(Long.valueOf(usuarioId), p.getId());
-                        
+
                         if (balanceHistoryResponse.getCodigoRespuesta().equals(Constante.NOT_BALANCE_HISTORY_AVAILABLE_CODE)) {
                             //No tiene producto asociado
                             currentBalanceProduct = 0F;
@@ -3424,6 +3424,29 @@ public class APIOperations {
             return new Respuesta(CodigoRespuesta.EXITO);
         } else {
             return new Respuesta(CodigoRespuesta.ERROR_CREDENCIALES);
+        }
+    }
+    
+    
+    
+    public RespuestaUsuario actualizarUsuarioporId(String usuarioApi,
+            String passwordApi, String usuarioId, Long remettencesDireccionId) {
+        try {
+            if (validarUsuario(usuarioApi, passwordApi)) {
+                Usuario usuario = entityManager.find(Usuario.class,
+                        Integer.parseInt(usuarioId));
+                usuario.setRemettencesDireccionId(BigInteger.valueOf(remettencesDireccionId));
+                entityManager.merge(usuario);
+                return new RespuestaUsuario(CodigoRespuesta.EXITO,
+                        CodigoRespuesta.EXITO.name(), usuario);
+            } else {
+                return new RespuestaUsuario(CodigoRespuesta.ERROR_CREDENCIALES);
+            }
+        } catch (NoResultException e) {
+            return new RespuestaUsuario(CodigoRespuesta.USUARIO_NO_EXISTE);
+        } catch (Exception e) {
+            return new RespuestaUsuario(CodigoRespuesta.ERROR_INTERNO,
+                    e.getMessage());
         }
     }
 
